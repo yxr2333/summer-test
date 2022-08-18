@@ -22,10 +22,19 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Integer uid;
 
-    private String username;
+    private Integer age;
 
-    private String password;
-    
+    private String gender;
+
+    @Column(name = "mailbox")
+    private String mailBox;
+
+    private String name;
+
+    private String pwd;
+
+    private String phone;
+
 }
