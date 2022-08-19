@@ -20,7 +20,7 @@ public interface UserDao extends JpaRepository<User, Integer> {
      * @param username
      * @return
      */
-    boolean existsByName(String username);
+    boolean existsByName(String username);  // 语义化
 
     Optional<User> findByName(String username);
 }

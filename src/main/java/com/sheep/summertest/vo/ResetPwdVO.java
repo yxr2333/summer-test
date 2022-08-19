@@ -12,7 +12,7 @@ import lombok.Data;
 @Data
 public class ResetPwdVO {
 
-    private Integer id;
+    private String username;
 
     private String newPwd;
 

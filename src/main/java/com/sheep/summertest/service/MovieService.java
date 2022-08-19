@@ -11,9 +11,30 @@ import com.sheep.summertest.dto.ApiResult;
  */
 public interface MovieService {
 
-    // 业务代码
-    ApiResult findAll();
+    /**
+     * 查询所有电影信息
+     *
+     * @param pageNum  页码
+     * @param pageSize 页容量
+     * @return 查询结果
+     */
+    ApiResult findAll(Integer pageNum, Integer pageSize);
 
+
+    /**
+     * 根据电影编号查询电影信息
+     *
+     * @param id 电影编号
+     * @return 查询结果
+     */
     ApiResult findOne(Integer id);
+
+    /**
+     * 获取电影的所有场次信息
+     *
+     * @param id 电影编号
+     * @return 查询结果
+     */
+    ApiResult getSessionsByMovieId(Integer id);
 
 }

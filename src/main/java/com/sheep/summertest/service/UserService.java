@@ -6,6 +6,8 @@ import com.sheep.summertest.vo.ResetPwdVO;
 import com.sheep.summertest.vo.UserLoginVO;
 import com.sheep.summertest.vo.UserRegisterVO;
 
+import javax.servlet.http.HttpServletRequest;
+
 /**
  * Created By Intellij IDEA
  *
@@ -78,8 +80,9 @@ public interface UserService {
     /**
      * 重置密码
      *
-     * @param vo 密码信息
+     * @param request 请求
+     * @param vo      密码信息
      * @return 请求结果
      */
-    ApiResult resetPassword(ResetPwdVO vo);
+    ApiResult resetPassword(HttpServletRequest request, ResetPwdVO vo);
 }

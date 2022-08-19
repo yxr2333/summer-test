@@ -1,8 +1,15 @@
 package com.sheep.summertest.controller;
 
+import com.sheep.summertest.dto.ApiResult;
+import com.sheep.summertest.entity.User;
 import com.sheep.summertest.service.UserService;
+import com.sheep.summertest.vo.ResetPwdVO;
+import com.sheep.summertest.vo.UserLoginVO;
+import com.sheep.summertest.vo.UserRegisterVO;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * Created By Intellij IDEA
@@ -12,10 +19,69 @@ import org.springframework.web.bind.annotation.RestController;
  * @datetime 2022/8/17 星期三
  */
 @RestController
+@RequestMapping("/user")
 public class UserController {
 
     @Autowired
     private UserService userService;
+
+
+    @PostMapping("/login")
+    public ApiResult doLogin(@RequestBody UserLoginVO vo) {
+        return userService.doLogin(vo);
+    }
+
+    /*
+    查询：Get
+    添加：Post
+    删除：Delete
+    更新：Put
+     */
+
+    @DeleteMapping("/{id}")
+    public ApiResult deleteOne(@PathVariable Integer id) {
+        return userService.deleteOne(id);
+    }
+
+    @GetMapping("/all")
+    public ApiResult findAll(Integer pageNum, Integer pageSize) {
+        return userService.findAll(pageNum, pageSize);
+    }
+
+    @PutMapping("")
+    public ApiResult updateOne(@RequestBody User user) {
+        return userService.updateOne(user);
+    }
+
+    @GetMapping("/one/{id}")
+    public ApiResult findOne(@PathVariable Integer id) {
+        return userService.findOne(id);
+    }
+
+    @PostMapping("")
+    public ApiResult addOne(@RequestBody UserRegisterVO vo) {
+        return userService.addOne(vo);
+    }
+
+    @GetMapping("/buy/history")
+    public ApiResult findBuyHistory(
+            @RequestParam(required = false) Integer uid,
+            @RequestParam(required = false) Integer pageNum,
+            @RequestParam(required = false) Integer pageSize) {
+        if (uid == null) {
+            return ApiResult.error("用户id不能为空");
+        }
+        if (pageNum == null || pageSize == null) {
+            pageNum = 1;
+            pageSize = 10;
+        }
+        return userService.getBuyHistory(uid, pageNum, pageSize);
+    }
+
+    @PostMapping("/resetpwd")
+    public ApiResult resetPassword(HttpServletRequest request, @RequestBody ResetPwdVO vo) {
+        return userService.resetPassword(request, vo);
+    }
 
 
 //    // Bean注入

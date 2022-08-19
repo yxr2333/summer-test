@@ -14,7 +14,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.Optional;
 
 /**
@@ -143,15 +146,25 @@ public class UserServiceImpl implements UserService {
         return ApiResult.success("查询成功", user);
     }
 
-
     /**
      * 重置密码
      *
-     * @param vo 密码信息
+     * @param request 请求
+     * @param vo      密码信息
      * @return 请求结果
      */
     @Override
-    public ApiResult resetPassword(ResetPwdVO vo) {
-        return null;
+    @Transactional(rollbackFor = Exception.class)
+    public ApiResult resetPassword(HttpServletRequest request, ResetPwdVO vo) {
+        HttpSession session = request.getSession();
+        String code = session.getAttribute("verify_code").toString();
+        if (code.equals(vo.getVerifyCode())) {
+            User user = userDao.findByName(vo.getUsername()).orElseThrow(() -> new RuntimeException("用户不存在"));
+            user.setPwd(vo.getNewPwd());
+            userDao.save(user);
+            return ApiResult.success("重置成功");
+        } else {
+            return ApiResult.error("验证码错误");
+        }
     }
 }
